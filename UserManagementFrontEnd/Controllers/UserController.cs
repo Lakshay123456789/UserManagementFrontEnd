@@ -12,23 +12,31 @@ namespace UserManagementFrontEnd.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-
-            List<User> users = new List<User>();
-            using (var httpClient = new HttpClient())
+            try
             {
-
-                using (var response = await httpClient.GetAsync("https://localhost:7234/api/User/GetAllUser"))
+                List<User> users = new List<User>();
+                using (var httpClient = new HttpClient())
                 {
-                    if (response.IsSuccessStatusCode)
+
+                    using (var response = await httpClient.GetAsync("https://localhost:7234/api/User/GetAllUser"))
                     {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        users = JsonConvert.DeserializeObject<List<User>>(apiResponse);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string apiResponse = await response.Content.ReadAsStringAsync();
+                            users = JsonConvert.DeserializeObject<List<User>>(apiResponse);
+                        }
+
                     }
-
                 }
-            }
-            return View(users);
+                return View(users);
 
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "An error occurred while processing your request.");
+            }
+
+            return RedirectToAction("Error");
         }
 
         [HttpGet]
