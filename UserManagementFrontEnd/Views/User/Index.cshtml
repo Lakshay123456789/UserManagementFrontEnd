@@ -1,0 +1,50 @@
+﻿@model List<UserManagementFrontEnd.Models.User>
+
+@{
+    ViewData["Title"] = "Display Users";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                @Html.ActionLink("Add New User", "AddUser", "User", new { @class = "btn btn-primary" })
+            </p>
+
+            @if (Model.Any())
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Contact</th>
+                            <th>Email</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.FirstName</td>
+                                <td>@user.LastName</td>
+                                <td>@user.Contact</td>
+                                <td>@user.Email</td>
+
+                                <td>
+                                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                                    <a class="btn btn-danger" asp-action="DeleteUser" asp-route-id="@user.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h2>No records found</h2>
+            }
+        </div>
+    </div>
+</div>
